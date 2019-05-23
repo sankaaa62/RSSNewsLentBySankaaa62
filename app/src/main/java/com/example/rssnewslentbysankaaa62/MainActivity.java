@@ -2,27 +2,40 @@ package com.example.rssnewslentbysankaaa62;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.Menu;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] listData = new String[]{"Post 1", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12", "Post 2", "Post 3", "Post 4", "Post 5", "Post 6",
-            "Post 7", "Post 8", "Post 9", "Post 10", "Post 11", "Post 12"};
+    private PostData[] listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postlist);
 
-        ListView listView = (ListView)this.findViewById(R.id.postListView);
-        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, R.layout.postitem, listData);
+        this.generateDummyData();
+        ListView listView = (ListView) this.findViewById(R.id.postListView);
+        PostItemAdapter itemAdapter = new PostItemAdapter(this,
+                R.layout.postitem, listData);
         listView.setAdapter(itemAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    private void generateDummyData() {
+        PostData data = null;
+        listData = new PostData[10];
+        for (int i = 0; i < 10; i++) {
+            data = new PostData();
+            data.postDate = "May 24, 2019";
+            data.postTitle = "Post " + (i + 1) + " Title: This is the Post Title from RSS Feed";
+            data.postThumbUrl = null;
+            listData[i] = data;
+        }
     }
 }

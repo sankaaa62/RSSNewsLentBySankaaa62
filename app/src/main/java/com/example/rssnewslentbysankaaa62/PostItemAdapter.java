@@ -40,7 +40,7 @@ public class PostItemAdapter extends ArrayAdapter<PostData> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        if (datas[position].postThumbUrl == null) {
+        if (datas[position].postLink == null) {
             viewHolder.postThumbView
                     .setImageResource(R.drawable.postthumb_loading);
         }

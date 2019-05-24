@@ -1,9 +1,6 @@
 package com.example.rssnewslentbysankaaa62;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -19,22 +16,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class RssDataController extends AsyncTask<String, Integer, ArrayList<PostData>> {
+public class RSSParser {
     private RSSXMLTag currentTag;
-    private MainActivity context;
 
-    public RssDataController(MainActivity ctx){
-        context = ctx;
-    }
-    @Override
-    protected ArrayList<PostData> doInBackground(String... params) {
-        // TODO Auto-generated method stub
-        String urlStr = params[0];
-        InputStream is = null;
-        ArrayList<PostData> postDataList = new ArrayList<PostData>();
+    private InputStream ReadURL(String URLstr){
+
+        InputStream inputStream = null;
+
         try {
-            URL url = new URL(urlStr);
+            //Загрузка данных по URL
+            URL url = new URL(URLstr);
             HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();
             connection.setReadTimeout(10 * 1000);
@@ -44,14 +37,30 @@ public class RssDataController extends AsyncTask<String, Integer, ArrayList<Post
             connection.connect();
             int response = connection.getResponseCode();
             Log.d("debug", "The response is: " + response);
-            is = connection.getInputStream();
+            inputStream = connection.getInputStream();
 
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return inputStream;
+    }
+
+    private ArrayList<PostData> ParseRSS(InputStream inputStream){
+
+        //Распарсим поток данных в лист постов.
+        ArrayList<PostData> postDataList = new ArrayList<PostData>();
+
+        try {
             // parse xml after getting the data
-            XmlPullParserFactory factory = XmlPullParserFactory
+            XmlPullParserFactory xmlParserFactory = XmlPullParserFactory
                     .newInstance();
-            factory.setNamespaceAware(true);
-            XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(is, null);
+            xmlParserFactory.setNamespaceAware(true);
+            XmlPullParser xpp = xmlParserFactory.newPullParser();
+            xpp.setInput(inputStream, null);
 
             int eventType = xpp.getEventType();
             PostData pdData = null;
@@ -140,21 +149,8 @@ public class RssDataController extends AsyncTask<String, Integer, ArrayList<Post
         return postDataList;
     }
 
-    @Override
-    protected void onPostExecute(ArrayList<PostData> result) {
-        // TODO Auto-generated method stub
+    public ArrayList<PostData> ReadRSS(String URLstr){
 
-        ArrayList<PostData> postDataList = new ArrayList<>();
-
-        for (int i = 0; i < result.size(); i++) {
-            postDataList.add(result.get(i));
-        }
-
-        PostData[] listData = postDataList.toArray(new PostData[postDataList.size()]);
-
-        ListView listView = (ListView) context.findViewById(R.id.postListView);
-        PostItemAdapter itemAdapter = new PostItemAdapter(context,
-                R.layout.postitem, listData);
-        listView.setAdapter(itemAdapter);
+        return ParseRSS(ReadURL(URLstr));
     }
 }

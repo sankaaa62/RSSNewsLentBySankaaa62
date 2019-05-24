@@ -1,23 +1,19 @@
 package com.example.rssnewslentbysankaaa62;
 
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public PostData[] listData;
+    //public PostData[] listData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postlist);
 
-        new RssDataController(this).execute("https://habr.com/ru/rss/best/daily/?fl=ru");
+        new ViewRSSPostsTask(this).execute("https://habr.com/ru/rss/best/daily/?fl=ru");
 
     }
 

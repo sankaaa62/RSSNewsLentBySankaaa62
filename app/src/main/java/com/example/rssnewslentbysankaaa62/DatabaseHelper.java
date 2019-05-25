@@ -24,7 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE " + TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+        db.execSQL("CREATE TABLE " + TABLE + " ("
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_URLCHANEL + " TEXT, "
                 + COLUMN_URLPOST + " TEXT, "
                 + COLUMN_TITLPOST + " TEXT, "

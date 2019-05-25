@@ -15,8 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class RSSParser {
     private RSSXMLTag currentTag;
@@ -49,10 +47,10 @@ public class RSSParser {
         return inputStream;
     }
 
-    private ArrayList<PostData> ParseRSS(InputStream inputStream){
+    private ArrayList<Post> ParseRSS(InputStream inputStream){
 
         //Распарсим поток данных в лист постов.
-        ArrayList<PostData> postDataList = new ArrayList<PostData>();
+        ArrayList<Post> postList = new ArrayList<Post>();
 
         try {
             // parse xml after getting the data
@@ -63,7 +61,7 @@ public class RSSParser {
             xpp.setInput(inputStream, null);
 
             int eventType = xpp.getEventType();
-            PostData pdData = null;
+            Post pdData = null;
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "EEE, DD MMM yyyy HH:mm:ss");
             while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -71,7 +69,7 @@ public class RSSParser {
 
                 } else if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("item")) {
-                        pdData = new PostData();
+                        pdData = new Post();
                         currentTag = RSSXMLTag.IGNORETAG;
                     } else if (xpp.getName().equals("title")) {
                         currentTag = RSSXMLTag.TITLE;
@@ -86,7 +84,7 @@ public class RSSParser {
                         // Adapter
                         Date postDate = dateFormat.parse(pdData.postDate);
                         pdData.postDate = dateFormat.format(postDate);
-                        postDataList.add(pdData);
+                        postList.add(pdData);
                     } else {
                         currentTag = RSSXMLTag.IGNORETAG;
                     }
@@ -107,10 +105,10 @@ public class RSSParser {
                                 break;
                             case LINK:
                                 if (content.length() != 0) {
-                                    if (pdData.postLink != null) {
-                                        pdData.postLink += content;
+                                    if (pdData.postURL != null) {
+                                        pdData.postURL += content;
                                     } else {
-                                        pdData.postLink = content;
+                                        pdData.postURL = content;
                                     }
                                 }
                                 break;
@@ -131,7 +129,7 @@ public class RSSParser {
 
                 eventType = xpp.next();
             }
-            Log.v("tst", String.valueOf((postDataList.size())));
+            Log.v("tst", String.valueOf((postList.size())));
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -146,10 +144,10 @@ public class RSSParser {
             e.printStackTrace();
         }
 
-        return postDataList;
+        return postList;
     }
 
-    public ArrayList<PostData> ReadRSS(String URLstr){
+    public ArrayList<Post> ReadRSS(String URLstr){
 
         return ParseRSS(ReadURL(URLstr));
     }

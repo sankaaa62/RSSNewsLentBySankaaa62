@@ -87,17 +87,17 @@ public class PostDBController {
             db.execSQL(DB_CREATE);
 
             // добавление начальных данных
-            ContentValues cv = new ContentValues();
-            for (int i = 1; i < 30; i++) {
+            //ContentValues cv = new ContentValues();
+            //for (int i = 1; i < 30; i++) {
 
-                cv.put(COLUMN_URLCHANEL, "chanel");
-                cv.put(COLUMN_URLPOST, "URL POST");
-                cv.put(COLUMN_TITLPOST, "Title post!");
-                cv.put(COLUMN_URLIMAGE, "URL IMAGE");
-                cv.put(COLUMN_DATEPOST, "May 24, 2019");
+             //   cv.put(COLUMN_URLCHANEL, "chanel");
+             //   cv.put(COLUMN_URLPOST, "URL POST");
+             //   cv.put(COLUMN_TITLPOST, "Title post!");
+             //   cv.put(COLUMN_URLIMAGE, "URL IMAGE");
+             //   cv.put(COLUMN_DATEPOST, "May 24, 2019");
 
-                db.insert(TABLE, null, cv);
-            }
+             //   db.insert(TABLE, null, cv);
+            //}
         }
 
         @Override

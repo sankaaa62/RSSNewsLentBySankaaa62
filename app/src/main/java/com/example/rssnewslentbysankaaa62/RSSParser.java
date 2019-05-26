@@ -82,8 +82,9 @@ public class RSSParser {
                     if (xpp.getName().equals("item")) {
                         // format the data here, otherwise format data in
                         // Adapter
-                        Date postDate = dateFormat.parse(pdData.postDate);
-                        pdData.postDate = dateFormat.format(postDate);
+                        //Date postDate = dateFormat.parse(pdData.postDate);
+                        //pdData.postDate = dateFormat.format(postDate);
+
                         postList.add(pdData);
                     } else {
                         currentTag = RSSXMLTag.IGNORETAG;
@@ -97,7 +98,7 @@ public class RSSParser {
                             case TITLE:
                                 if (content.length() != 0) {
                                     if (pdData.postTitle != null) {
-                                        pdData.postTitle += content;
+                                        pdData.postTitle = content;
                                     } else {
                                         pdData.postTitle = content;
                                     }
@@ -106,7 +107,7 @@ public class RSSParser {
                             case LINK:
                                 if (content.length() != 0) {
                                     if (pdData.postURL != null) {
-                                        pdData.postURL += content;
+                                        pdData.postURL = content;
                                     } else {
                                         pdData.postURL = content;
                                     }
@@ -115,7 +116,7 @@ public class RSSParser {
                             case DATE:
                                 if (content.length() != 0) {
                                     if (pdData.postDate != null) {
-                                        pdData.postDate += content;
+                                        pdData.postDate = content;
                                     } else {
                                         pdData.postDate = content;
                                     }
@@ -139,9 +140,9 @@ public class RSSParser {
         } catch (XmlPullParserException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+ //       } catch (ParseException e) {
+ //           // TODO Auto-generated catch block
+ //           e.printStackTrace();
         }
 
         return postList;

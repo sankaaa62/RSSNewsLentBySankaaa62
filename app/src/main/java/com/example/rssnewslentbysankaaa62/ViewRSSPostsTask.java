@@ -12,6 +12,7 @@ public class ViewRSSPostsTask extends AsyncTask<String, Integer, ArrayList<Post>
     public ViewRSSPostsTask(MainActivity ctx){
         context = ctx;
     }
+
     @Override
     protected void onPostExecute(ArrayList<Post> result) {
         // TODO Auto-generated method stub
@@ -22,7 +23,11 @@ public class ViewRSSPostsTask extends AsyncTask<String, Integer, ArrayList<Post>
             postList.add(result.get(i));
         }
 
-        Post[] listData = postList.toArray(new Post[postList.size()]);
+        for (Post post:result) {
+            context.db.addRec(post);
+        }
+
+        //Post[] listData = postList.toArray(new Post[postList.size()]);
 
         //ЗАКОМЕНТИЛ ДЛЯ БИЛДА, РАЗГРЕСТИ!!!
  //       ListView listView = (ListView) context.findViewById(R.id.postListView);

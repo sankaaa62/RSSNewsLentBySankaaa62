@@ -1,11 +1,9 @@
 package com.example.rssnewslentbysankaaa62;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
@@ -15,14 +13,17 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 1;
     ListView postsListView;
     PostDBController db;
     SimpleCursorAdapter scAdapter;
-
-    /** Called when the activity is first created. */
+    
+    RSSParser rssParser;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postlist);
@@ -50,14 +51,16 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     // обработка нажатия кнопки
     public void onButtonClick(View view) {
         // добавляем запись
-        Post newPost =new Post();
-        db.addRec(newPost);
+        //Post newPost =new Post();
+        //db.addRec(newPost);
+        String urlChanel = "https://habr.com/ru/rss/best/daily/?fl=ru";
+        UpdateBD(urlChanel);
+
         // получаем новый курсор с данными
         getSupportLoaderManager().getLoader(0).forceLoad();
     }
 
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
     }
@@ -96,21 +99,17 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    static class MyCursorLoader extends CursorLoader {
+    public void UpdateBD(String URL){
 
-        PostDBController db;
+        new ViewRSSPostsTask(this).execute(URL);
 
-        public MyCursorLoader(Context context, PostDBController db) {
-            super(context);
-            this.db = db;
-        }
 
-        @Override
-        public Cursor loadInBackground() {
-            Cursor cursor = db.getAllData();
+        //rssParser = new RSSParser();
 
-            return cursor;
-        }
+        //ArrayList<Post> postList = rssParser.ReadRSS(URL);
 
+        //for (Post post:postList) {
+        //    db.addRec(post);
+        //}
     }
 }

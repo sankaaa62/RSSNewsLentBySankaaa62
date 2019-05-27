@@ -11,10 +11,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class RSSParser {
     private RSSXMLTag currentTag;
@@ -62,8 +64,8 @@ public class RSSParser {
 
             int eventType = xpp.getEventType();
             Post pdData = null;
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "EEE, DD MMM yyyy HH:mm:ss");
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, DD MMM yyyy HH:mm:ss");
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
 
@@ -84,6 +86,22 @@ public class RSSParser {
                         // Adapter
                         //Date postDate = dateFormat.parse(pdData.postDate);
                         //pdData.postDate = dateFormat.format(postDate);
+
+                        String oldTime = pdData.postDate;
+
+                        // RSS time format
+                        DateFormat originalFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+                        // SQLite compatible format
+                        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date date = null;
+                        try {
+                            date = originalFormat.parse(oldTime);
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String formattedDate = targetFormat.format(date);
+                        pdData.postDate = formattedDate;
 
                         postList.add(pdData);
                     } else {

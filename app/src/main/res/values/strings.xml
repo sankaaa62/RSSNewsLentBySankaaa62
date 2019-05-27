@@ -2,5 +2,6 @@
     <string name="app_name">RSSNewsLentBySankaaa62</string>
 
     <string name="add_record">Добавить запись</string>
+    <string name="open_post_record">Открыть запись</string>
     <string name="delete_record">Удалить запись</string>
 </resources>

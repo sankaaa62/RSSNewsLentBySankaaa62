@@ -5,11 +5,10 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ViewRSSPostsTask extends AsyncTask<String, Integer, ArrayList<Post>> {
-    private RSSXMLTag currentTag;
+public class ParseRSStoDBTask extends AsyncTask<String, Integer, ArrayList<Post>> {
     private MainActivity context;
 
-    public ViewRSSPostsTask(MainActivity ctx){
+    public ParseRSStoDBTask(MainActivity ctx){
         context = ctx;
     }
 
@@ -26,27 +25,15 @@ public class ViewRSSPostsTask extends AsyncTask<String, Integer, ArrayList<Post>
         for (Post post:result) {
             context.db.addRec(post);
         }
-
-        //Post[] listData = postList.toArray(new Post[postList.size()]);
-
-        //ЗАКОМЕНТИЛ ДЛЯ БИЛДА, РАЗГРЕСТИ!!!
- //       ListView listView = (ListView) context.findViewById(R.id.postListView);
- //       PostItemAdapter itemAdapter = new PostItemAdapter(context,
- //               R.layout.postitem, listData);
- //       listView.setAdapter(itemAdapter);
     }
 
     @Override
     protected ArrayList<Post> doInBackground(String... params) {
         // TODO Auto-generated method stub
 
-        ArrayList<Post> postList = new ArrayList<Post>();
         String urlStr = params[0];
-
         RSSParser rssParser = new RSSParser();
-        postList = rssParser.ReadRSS(urlStr);
-
-        return postList;
+        return rssParser.ReadRSS(urlStr);
     }
 
 }

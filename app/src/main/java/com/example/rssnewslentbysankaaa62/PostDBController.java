@@ -53,7 +53,26 @@ public class PostDBController {
 
     // получить все данные из таблицы DB_TABLE
     public Cursor getAllData() {
-        return mDB.query(TABLE, null, null, null, null, null, null);
+        return mDB.query(TABLE, null, null, null, null, null, COLUMN_DATEPOST);
+    }
+
+    // получить пост по id
+    public Post getPost(long id){
+
+        Post result = new Post();
+
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[] {String.valueOf(id)};
+        Cursor c = mDB.query(TABLE, null, selection, selectionArgs, null, null, null);
+        if(c.moveToFirst()){
+            // достаем данные из курсора
+            result.postChanelURL = c.getString(c.getColumnIndexOrThrow("urlchanel"));
+            result.postURL = c.getString(c.getColumnIndexOrThrow("urlpost"));
+            result.postTitle = c.getString(c.getColumnIndexOrThrow("titlepost"));
+            result.postImageURL = c.getString(c.getColumnIndexOrThrow("urlimage"));
+            result.postDate = c.getString(c.getColumnIndexOrThrow("datepost"));
+        }
+        return result;
     }
 
     // добавить запись в DB_TABLE

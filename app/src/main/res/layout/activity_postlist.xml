@@ -8,8 +8,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onButtonClick"
-        android:text="@string/add_record">
+        android:onClick="addHabrPosts"
+        android:text="Подгрузить посты с Хабра">
+    </Button>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="refreshListView"
+        android:text="Обновить">
     </Button>
     <ListView
         android:id="@+id/lvData"

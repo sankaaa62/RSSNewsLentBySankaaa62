@@ -1,6 +1,8 @@
 package com.example.rssnewslentbysankaaa62;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -13,17 +15,19 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_VIEWFULLPOST_ID = 2;
+
+    Post selectPost;
+
     ListView postsListView;
     PostDBController db;
     SimpleCursorAdapter scAdapter;
     
-    RSSParser rssParser;
-    
+    //RSSParser rssParser;
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postlist);
@@ -49,20 +53,35 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     }
 
     // обработка нажатия кнопки
-    public void onButtonClick(View view) {
+    public void refreshListView(View view) {
         // добавляем запись
         //Post newPost =new Post();
         //db.addRec(newPost);
-        String urlChanel = "https://habr.com/ru/rss/best/daily/?fl=ru";
-        UpdateBD(urlChanel);
+        //String urlChanel = "https://habr.com/ru/rss/best/daily/?fl=ru";
+        //updateBD(urlChanel);
 
         // получаем новый курсор с данными
         getSupportLoaderManager().getLoader(0).forceLoad();
     }
 
+    public  void addPost(View view){
+        // добавляем запись
+        Post newPost =new Post();
+        db.addRec(newPost);
+
+        // получаем новый курсор с данными
+        getSupportLoaderManager().getLoader(0).forceLoad();
+    }
+
+    public  void addHabrPosts(View view){
+        String urlChanel = "https://habr.com/ru/rss/best/daily/?fl=ru";
+        updateBD(urlChanel);
+    }
+
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+        menu.add(0, CM_VIEWFULLPOST_ID, 0, R.string.open_post_record);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
@@ -74,6 +93,20 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
             db.delRec(acmi.id);
             // получаем новый курсор с данными
             getSupportLoaderManager().getLoader(0).forceLoad();
+
+            return true;
+        }
+        if (item.getItemId() == CM_VIEWFULLPOST_ID) {
+            // получаем из пункта контекстного меню данные по пункту списка
+            AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item
+                    .getMenuInfo();
+
+            selectPost = db.getPost(acmi.id);
+
+            Intent intent;
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(selectPost.postURL));
+            startActivity(intent);
+
             return true;
         }
         return super.onContextItemSelected(item);
@@ -99,17 +132,9 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    public void UpdateBD(String URL){
-
-        new ViewRSSPostsTask(this).execute(URL);
-
-
-        //rssParser = new RSSParser();
-
-        //ArrayList<Post> postList = rssParser.ReadRSS(URL);
-
-        //for (Post post:postList) {
-        //    db.addRec(post);
-        //}
+    public void updateBD(String URL){
+        new ParseRSStoDBTask(this).execute(URL);
     }
+
+
 }

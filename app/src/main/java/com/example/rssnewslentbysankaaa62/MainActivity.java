@@ -37,11 +37,11 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         db.open();
 
         // формируем столбцы сопоставления
-        String[] from = new String[] { PostDBController.COLUMN_TITLPOST, PostDBController.COLUMN_URLIMAGE, PostDBController.COLUMN_DESCRIPTION, PostDBController.COLUMN_DATEPOST };
+        String[] from = new String[] { PostDBController.COLUMN_TITLPOST,PostDBController.COLUMN_URLIMAGE, PostDBController.COLUMN_DESCRIPTION, PostDBController.COLUMN_DATEPOST };
         int[] to = new int[] { R.id.postTitle, R.id.postImgURL, R.id.postDescription, R.id.postDate };
 
         // создаем адаптер и настраиваем список
-        scAdapter = new SimpleCursorAdapter(this, R.layout.postitem, null, from, to, 0);
+        scAdapter = new CustomSimpleCursorAdapter(this, R.layout.postitem, null, from, to, 0);
         postsListView = (ListView) findViewById(R.id.lvData);
         postsListView.setAdapter(scAdapter);
 
@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 
     public  void addHabrPosts(View view){
         String urlChanel = "https://habr.com/ru/rss/best/daily/?fl=ru";
+
         updateBD(urlChanel);
     }
 

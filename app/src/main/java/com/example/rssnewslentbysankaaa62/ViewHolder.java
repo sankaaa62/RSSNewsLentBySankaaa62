@@ -1,10 +1,10 @@
 package com.example.rssnewslentbysankaaa62;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ViewHolder {
-    TextView postTitleView;
-    TextView postDateView;
-    ImageView postThumbView;
+    ImageView imageView;
+    String imageURL;
+    Bitmap bitmap;
 }

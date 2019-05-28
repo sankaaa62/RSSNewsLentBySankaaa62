@@ -20,6 +20,7 @@ public class PostDBController {
     public static final String COLUMN_TITLPOST = "titlepost";
     public static final String COLUMN_URLIMAGE = "urlimage";
     public static final String COLUMN_DATEPOST = "datepost";
+    public static final String COLUMN_DESCRIPTION = "description";
 
     // запрос на создание базы
     private static final String DB_CREATE =
@@ -29,7 +30,8 @@ public class PostDBController {
                     + COLUMN_URLPOST + " TEXT, "
                     + COLUMN_TITLPOST + " TEXT, "
                     + COLUMN_URLIMAGE + " TEXT, "
-                    + COLUMN_DATEPOST + " TEXT);";
+                    + COLUMN_DATEPOST + " TEXT, "
+                    + COLUMN_DESCRIPTION + " TEXT);";
 
     private final Context mCtx;
 
@@ -71,6 +73,7 @@ public class PostDBController {
             result.postTitle = c.getString(c.getColumnIndexOrThrow("titlepost"));
             result.postImageURL = c.getString(c.getColumnIndexOrThrow("urlimage"));
             result.postDate = c.getString(c.getColumnIndexOrThrow("datepost"));
+            result.postDescription = c.getString(c.getColumnIndexOrThrow("description"));
         }
         return result;
     }
@@ -83,6 +86,7 @@ public class PostDBController {
         cv.put(COLUMN_TITLPOST, data.postTitle);
         cv.put(COLUMN_URLIMAGE, data.postImageURL);
         cv.put(COLUMN_DATEPOST, data.postDate);
+        cv.put(COLUMN_DESCRIPTION, data.postDescription);
 
         mDB.insert(TABLE, null, cv);
     }

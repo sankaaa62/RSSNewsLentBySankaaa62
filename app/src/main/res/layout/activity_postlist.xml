@@ -5,18 +5,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addHabrPosts"
-        android:text="Подгрузить посты с Хабра">
-    </Button>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="refreshListView"
-        android:text="Обновить">
-    </Button>
+
+    <include layout="@layout/button_panel" />
+
     <ListView
         android:id="@+id/lvData"
         android:layout_width="match_parent"

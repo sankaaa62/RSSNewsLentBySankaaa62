@@ -5,4 +5,5 @@ public enum RSSXMLTag {
     TITLE,
     LINK,
     DATE,
+    DESCRIPTION
 }

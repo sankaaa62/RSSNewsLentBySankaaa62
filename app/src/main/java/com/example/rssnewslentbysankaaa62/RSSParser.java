@@ -1,5 +1,8 @@
 package com.example.rssnewslentbysankaaa62;
 
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -79,6 +82,8 @@ public class RSSParser {
                         currentTag = RSSXMLTag.LINK;
                     } else if (xpp.getName().equals("pubDate")) {
                         currentTag = RSSXMLTag.DATE;
+                    }else if (xpp.getName().equals("description")) {
+                        currentTag = RSSXMLTag.DESCRIPTION;
                     }
                 } else if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().equals("item")) {
@@ -137,6 +142,52 @@ public class RSSParser {
                                         pdData.postDate = content;
                                     } else {
                                         pdData.postDate = content;
+                                    }
+                                }
+                                break;
+                            case DESCRIPTION:
+                                if (content.length() != 0) {
+                                    if (pdData.postDescription != null) {
+
+                                        //вытаскиваем ссылку на изображение, если она есть
+                                        pdData.postImageURL = "none";
+                                        try {
+                                            int startIndex = content.indexOf("<img src=\"");
+                                            int endIndex = content.indexOf(".jpeg\">");
+                                            String imgURL = content.substring(startIndex + 10, endIndex + 5);
+
+                                            pdData.postImageURL = imgURL;
+                                        }
+                                        catch (Exception exceptionObject) {
+                                            try {
+                                                int startIndex = content.indexOf("<img src=\"");
+                                                int endIndex = content.indexOf(".png\">");
+                                                String imgURL = content.substring(startIndex + 10, endIndex + 5);
+
+                                                pdData.postImageURL = imgURL;
+                                            }
+                                            catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+
+                                        //срезаем концовку
+                                        content = content.substring(0, content.length() - 20);
+                                        content += "/>";
+
+
+                                        Spanned text;
+
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                            text = Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT);
+                                        } else {
+                                            text = Html.fromHtml(content);
+                                        }
+
+                                        pdData.postDescription =  text.toString();
+                                    } else {
+                                        pdData.postDescription = "none";
                                     }
                                 }
                                 break;

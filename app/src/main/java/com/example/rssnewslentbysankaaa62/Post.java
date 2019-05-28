@@ -7,13 +7,15 @@ public class Post {
     public String postTitle;
     public String postImageURL;
     public String postDate;
+    public String postDescription;
 
-    public Post(String pChanelURL, String pURL, String pTitle, String pImageURL, String pDate){
+    public Post(String pChanelURL, String pURL, String pTitle, String pImageURL, String pDate, String pDescription){
         postChanelURL = pChanelURL;
         postURL = pURL;
         postTitle = pTitle;
         postImageURL = pImageURL;
         postDate = pDate;
+        postDescription = pDescription;
     }
 
     public Post(){
@@ -22,6 +24,7 @@ public class Post {
         postTitle = "none";
         postImageURL = "none";
         postDate = "none";
+        postDescription = "none";
     }
     public Post(String pLink, String pTitle, String pDate){
         postChanelURL = "none";
@@ -29,5 +32,6 @@ public class Post {
         postTitle = pTitle;
         postImageURL = "none";
         postDate = pDate;
+        postDescription = "none";
     }
 }

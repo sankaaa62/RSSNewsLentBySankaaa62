@@ -37,8 +37,8 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         db.open();
 
         // формируем столбцы сопоставления
-        String[] from = new String[] { PostDBController.COLUMN_TITLPOST, PostDBController.COLUMN_URLCHANEL, PostDBController.COLUMN_URLPOST, PostDBController.COLUMN_DATEPOST };
-        int[] to = new int[] { R.id.postTitle, R.id.postChanel, R.id.postURL, R.id.postDate };
+        String[] from = new String[] { PostDBController.COLUMN_TITLPOST, PostDBController.COLUMN_URLIMAGE, PostDBController.COLUMN_DESCRIPTION, PostDBController.COLUMN_DATEPOST };
+        int[] to = new int[] { R.id.postTitle, R.id.postImgURL, R.id.postDescription, R.id.postDate };
 
         // создаем адаптер и настраиваем список
         scAdapter = new SimpleCursorAdapter(this, R.layout.postitem, null, from, to, 0);

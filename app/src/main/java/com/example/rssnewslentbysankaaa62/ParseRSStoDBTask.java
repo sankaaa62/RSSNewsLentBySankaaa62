@@ -16,12 +16,6 @@ public class ParseRSStoDBTask extends AsyncTask<String, Integer, ArrayList<Post>
     protected void onPostExecute(ArrayList<Post> result) {
         // TODO Auto-generated method stub
 
-        ArrayList<Post> postList = new ArrayList<>();
-
-        for (int i = 0; i < result.size(); i++) {
-            postList.add(result.get(i));
-        }
-
         for (Post post:result) {
             context.db.addRec(post);
         }
